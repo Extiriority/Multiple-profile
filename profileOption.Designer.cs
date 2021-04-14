@@ -87,7 +87,7 @@ namespace MultipeProfileWinForm
             // 
             this.AgeLabel.AutoSize = true;
             this.AgeLabel.Font = new System.Drawing.Font("UD Digi Kyokasho NK-B", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AgeLabel.Location = new System.Drawing.Point(24, 231);
+            this.AgeLabel.Location = new System.Drawing.Point(272, 231);
             this.AgeLabel.Name = "AgeLabel";
             this.AgeLabel.Size = new System.Drawing.Size(61, 14);
             this.AgeLabel.TabIndex = 12;
@@ -98,7 +98,7 @@ namespace MultipeProfileWinForm
             // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.Font = new System.Drawing.Font("UD Digi Kyokasho NK-B", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nameLabel.Location = new System.Drawing.Point(24, 156);
+            this.nameLabel.Location = new System.Drawing.Point(272, 156);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(47, 14);
             this.nameLabel.TabIndex = 11;
@@ -109,7 +109,7 @@ namespace MultipeProfileWinForm
             // 
             this.profileAddLabel.AutoSize = true;
             this.profileAddLabel.Font = new System.Drawing.Font("UD Digi Kyokasho NK-B", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.profileAddLabel.Location = new System.Drawing.Point(12, 110);
+            this.profileAddLabel.Location = new System.Drawing.Point(260, 110);
             this.profileAddLabel.Name = "profileAddLabel";
             this.profileAddLabel.Size = new System.Drawing.Size(258, 31);
             this.profileAddLabel.TabIndex = 10;
@@ -124,7 +124,7 @@ namespace MultipeProfileWinForm
             "<11",
             "12-17",
             "18+"});
-            this.comboAgeBox.Location = new System.Drawing.Point(24, 249);
+            this.comboAgeBox.Location = new System.Drawing.Point(272, 249);
             this.comboAgeBox.Name = "comboAgeBox";
             this.comboAgeBox.Size = new System.Drawing.Size(74, 23);
             this.comboAgeBox.TabIndex = 9;
@@ -132,7 +132,7 @@ namespace MultipeProfileWinForm
             // 
             // inputNameBox
             // 
-            this.inputNameBox.Location = new System.Drawing.Point(24, 174);
+            this.inputNameBox.Location = new System.Drawing.Point(272, 174);
             this.inputNameBox.Name = "inputNameBox";
             this.inputNameBox.PlaceholderText = "Naam";
             this.inputNameBox.Size = new System.Drawing.Size(228, 23);
@@ -142,7 +142,7 @@ namespace MultipeProfileWinForm
             // addProfileButton
             // 
             this.addProfileButton.Font = new System.Drawing.Font("UD Digi Kyokasho NK-B", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.addProfileButton.Location = new System.Drawing.Point(183, 328);
+            this.addProfileButton.Location = new System.Drawing.Point(345, 327);
             this.addProfileButton.Name = "addProfileButton";
             this.addProfileButton.Size = new System.Drawing.Size(82, 23);
             this.addProfileButton.TabIndex = 7;
@@ -154,7 +154,7 @@ namespace MultipeProfileWinForm
             // backButton
             // 
             this.backButton.Font = new System.Drawing.Font("UD Digi Kyokasho NK-B", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.backButton.Location = new System.Drawing.Point(24, 328);
+            this.backButton.Location = new System.Drawing.Point(713, 12);
             this.backButton.Name = "backButton";
             this.backButton.Size = new System.Drawing.Size(75, 23);
             this.backButton.TabIndex = 13;

@@ -26,15 +26,14 @@ namespace MultipeProfileWinForm
         {
             string age = comboAgeBox.Text;
             string name = inputNameBox.Text;
+            string profile = $"{name} | {age}";
 
             if (name == "" || age == "")
             {
                 MessageBox.Show("Naam en/of leeftijd niet ingevuld");
             }
             else
-            {
-                string profile = $"{name} | {age}";
-                
+            {                        
                 if (listProfileBox.Items.Contains(profile))
                 {
                     MessageBox.Show($"U heeft al een naam die {name} heet");
