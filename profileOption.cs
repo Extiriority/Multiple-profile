@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ClassLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,44 +14,73 @@ namespace MultipeProfileWinForm
 {
     public partial class dataflixProfiles : Form
     {
-        
+
         public dataflixProfiles()
         {
             InitializeComponent();
+            viewProfiles();
         }
-
+        string constring = "Data Source=mssql.fhict.local;Initial Catalog=dbi463189_dataflix;Persist Security Info=True;User ID=dbi463189_dataflix;Password=Spreeuwen11%";
+        
         private void createNewProfileButton_Click(object sender, EventArgs e)
         {
             profileCreationUI();
         }
         public void addProfileButton_Click(object sender, EventArgs e)
         {
-            string age = comboAgeBox.Text;
-            string name = inputNameBox.Text;
-            string profile = $"{name} | {age}";
 
-            if (name == "" || age == "")
+            string name = inputNameBox.Text;
+            string age = birthDatePicker.Text;
+
+            string profile = $"{age} | {name}";
+
+            if (name != "")
             {
-                MessageBox.Show("Naam en/of leeftijd niet ingevuld");
-            }
-            else
-            {                        
                 if (listProfileBox.Items.Contains(profile))
                 {
                     MessageBox.Show($"U heeft al een naam die {name} heet");
                 }
                 else
                 {
-                    listProfileBox.Items.Add(profile);
-                    MessageBox.Show($"Profiel {name} is aangemaakt");
-                    profileOptionUI();
-                    resetInput();
+                    SqlConnection conDatabase = new SqlConnection(constring);
+                    try
+                    {                       
+                        conDatabase.Open();
+
+                        string Query = "INSERT INTO GebruikerProfiel (ProfielNaam,Geboortedatum) VALUES ('" + inputNameBox.Text + "','" + birthDatePicker.Text + "');";
+                        SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                        SqlDataReader myReader = cmdDatabase.ExecuteReader();                   
+                        profileOptionCreateUI();
+                        resetInput();
+                        viewProfiles();
+                        MessageBox.Show($"Profiel {name} is aangemaakt");
+
+                        while (myReader.Read())
+                        {
+
+                        }
+                    }
+                    finally
+                    {
+                        conDatabase.Close();
+                    }                   
                 }
+            }
+            else
+            {
+                MessageBox.Show("Naam niet ingevuld!");
             }
         }
         private void backButton_Click(object sender, EventArgs e)
         {
-            profileOptionUI();
+            if (profileAddLabel.Visible == true)
+            {
+                profileOptionCreateUI();
+            }
+            else
+            {
+                profileOptionSaveUI();
+            }
             resetInput();
         }
 
@@ -64,14 +95,106 @@ namespace MultipeProfileWinForm
                 MessageBox.Show($"Profiel {listProfileBox.Text} gekozen");
             }
         }
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            if (listProfileBox.Text == "")
+            {
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te verwijderen.");
+            }
+            else
+            {
+                SqlConnection conDatabase = new SqlConnection(constring);
+                try
+                {
+                    conDatabase.Open();
 
+                    string Query = "DELETE FROM GebruikerProfiel WHERE ProfielNaam='" + inputEditNameBox.Text + "'";
+                    SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                    SqlDataReader myReader = cmdDatabase.ExecuteReader();
+                    viewProfiles();
+                    profileOptionSaveUI();
+                    resetInput();
+
+                    MessageBox.Show($"Profiel is verwijdered");
+
+                    while (myReader.Read())
+                    {
+
+                    }
+                }
+                finally
+                {
+                    conDatabase.Close();
+                }
+                deleteButton.Visible = false;
+                editButton.Visible = false;
+            }
+            
+        }
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            if (listProfileBox.Text == "")
+            {
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te bewerken.");
+            }
+            else
+            {
+                profileEditUI();
+            }
+            
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            string age = birthDateEditPicker.Text;
+            string name = inputEditNameBox.Text;
+            string profile = $"{name} | {age}";
+
+            if (name == "" || age == "")
+            {
+                MessageBox.Show("Naam en/of leeftijd niet ingevuld");
+            }
+            else
+            {
+                if (listProfileBox.Items.Contains(profile))
+                {
+                    MessageBox.Show($"U heeft al een naam die {name} heet");
+                }
+                else
+                {
+                    SqlConnection conDatabase = new SqlConnection(constring);
+                    try
+                    {
+                        conDatabase.Open();
+
+                        string Query = "UPDATE GebruikerProfiel SET ProfielNaam='" + inputEditNameBox.Text + "' WHERE ProfielNaam='" + listProfileBox.SelectedItem.ToString() + "'";
+                        SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                        SqlDataReader myReader = cmdDatabase.ExecuteReader();
+                        viewProfiles();
+                        profileOptionSaveUI();
+                        resetInput();
+
+                        MessageBox.Show($"Profiel {name} is bewerkt");
+
+                        while (myReader.Read())
+                        {
+
+                        }
+                    }
+                    finally
+                    {
+                        conDatabase.Close();
+                    }
+                }
+            }  
+        }
         public void profileCreationUI()
         {
             profileAddLabel.Visible = true;
             nameLabel.Visible = true;
             inputNameBox.Visible = true;
             AgeLabel.Visible = true;
-            comboAgeBox.Visible = true;
+            birthDatePicker.Visible = true;
             addProfileButton.Visible = true;
             backButton.Visible = true;
 
@@ -79,29 +202,114 @@ namespace MultipeProfileWinForm
             whoLabelText.Visible = false;
             listProfileBox.Visible = false;
             continueButton.Visible = false;
-            
+            editButton.Visible = false;
+            deleteButton.Visible = false;
         }
-
         public void profileOptionUI()
         {
-            profileAddLabel.Visible = false;
-            nameLabel.Visible = false;
-            inputNameBox.Visible = false;
-            AgeLabel.Visible = false;
-            comboAgeBox.Visible = false;
-            addProfileButton.Visible = false;
-            backButton.Visible = false;
-
             createNewProfileButton.Visible = true;
             whoLabelText.Visible = true;
             listProfileBox.Visible = true;
             continueButton.Visible = true;
         }
+        public void profileOptionCreateUI()
+        {
+            profileAddLabel.Visible = false;
+            nameLabel.Visible = false;
+            inputNameBox.Visible = false;
+            AgeLabel.Visible = false;
+            birthDatePicker.Visible = false;
+            addProfileButton.Visible = false;
+            backButton.Visible = false;
+
+            profileOptionUI();
+        }
+
+        public void profileOptionSaveUI()
+        {
+            profileEditLabel.Visible = false;
+            nameEditLabel.Visible = false;
+            inputEditNameBox.Visible = false;
+            AgeEditLabel.Visible = false;
+            birthDateEditPicker.Visible = false;
+            saveButton.Visible = false;
+            backButton.Visible = false;
+            editButton.Visible = false;
+            deleteButton.Visible = false;
+
+            profileOptionUI();
+        }
+
+        public void profileEditUI() 
+        {
+            profileEditLabel.Visible = true;
+            nameEditLabel.Visible = true;
+            inputEditNameBox.Visible = true;
+            AgeEditLabel.Visible = true;
+            birthDateEditPicker.Visible = true;
+            saveButton.Visible = true;
+            backButton.Visible = true;
+
+            editButton.Visible = false;
+            deleteButton.Visible = false;
+            createNewProfileButton.Visible = false;
+            whoLabelText.Visible = false;
+            listProfileBox.Visible = false;
+            continueButton.Visible = false;
+        }
 
         public void resetInput()
         {
             inputNameBox.Text = "";
-            comboAgeBox.SelectedIndex = -1;
+            birthDatePicker.Text  = "1-1-2000";
         }
+
+        private void listProfileBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox list = sender as ListBox;
+            if (list.SelectedIndex != -1)
+            {
+                listProfileBox.SelectedIndex = list.SelectedIndex;
+                hiddenAgeListBox.SelectedIndex = list.SelectedIndex;
+                hiddenIdListBox.SelectedIndex = list.SelectedIndex;
+
+                inputEditNameBox.Text = listProfileBox.SelectedItem.ToString();
+                birthDateEditPicker.Value = DateTime.Parse(hiddenAgeListBox.SelectedItem.ToString());
+                hiddenIdNameBox.Text = listProfileBox.SelectedItem.ToString();
+            }
+            deleteButton.Visible = true;
+            editButton.Visible = true;
+        }
+
+        private void viewProfiles()
+        {
+            SqlConnection conDatabase = new SqlConnection(constring);
+            try
+            {
+                listProfileBox.Items.Clear();
+                hiddenAgeListBox.Items.Clear();
+                hiddenIdListBox.Items.Clear();
+
+                conDatabase.Open();
+
+                string Query = "SELECT * FROM GebruikerProfiel";
+                SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                SqlDataReader profileView = cmdDatabase.ExecuteReader();
+                if (profileView.HasRows)
+                {
+                    while (profileView.Read())
+                    {
+                        listProfileBox.Items.Add(profileView["ProfielNaam"].ToString());
+                        hiddenAgeListBox.Items.Add(profileView["Geboortedatum"].ToString());
+                        hiddenIdListBox.Items.Add(profileView["ProfielId"].ToString());
+                    }
+                }
+            }
+            finally
+            {
+                conDatabase.Close();
+            }
+        }
+
     }
 }
