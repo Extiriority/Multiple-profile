@@ -14,10 +14,13 @@ namespace MultipeProfileWinForm
         }
         string constring = "Data Source=mssql.fhict.local;Initial Catalog=dbi463189_dataflix;Persist Security Info=True;User ID=dbi463189_dataflix;Password=Spreeuwen11%";
         
+        //Opens profile creation UI
         private void createNewProfileButton_Click(object sender, EventArgs e)
         {
             profileCreationUI();
         }
+
+        //adds a profile
         public void addProfileButton_Click(object sender, EventArgs e)
         {
             string name = inputNameBox.Text;
@@ -52,6 +55,7 @@ namespace MultipeProfileWinForm
                 MessageBox.Show("Naam niet ingevuld!");
             }
         }
+        //back to Profile selection list
         private void backButton_Click(object sender, EventArgs e)
         {
             if (profileAddLabel.Visible == true)
@@ -64,7 +68,7 @@ namespace MultipeProfileWinForm
             }
             resetInput();
         }
-
+        //Continue with this profile
         private void continueButton_Click(object sender, EventArgs e)
         {
             if (listProfileBox.Text == "")
@@ -76,6 +80,7 @@ namespace MultipeProfileWinForm
                 MessageBox.Show($"Profiel {listProfileBox.Text} gekozen");
             }
         }
+        //Delete profile
         private void deleteButton_Click(object sender, EventArgs e)
         {
             if (listProfileBox.Text != "")
@@ -119,6 +124,8 @@ namespace MultipeProfileWinForm
                 MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te verwijderen!");
             }          
         }
+
+        //Opens edit profile UI
         private void editButton_Click(object sender, EventArgs e)
         {
             if (listProfileBox.Text == "")
@@ -131,7 +138,7 @@ namespace MultipeProfileWinForm
             }
             
         }
-
+        //Edits being saved
         private void saveButton_Click(object sender, EventArgs e)
         {
             string age = birthDateEditPicker.Text;
@@ -170,6 +177,7 @@ namespace MultipeProfileWinForm
 
             }  
         }
+        //UI changing (Create and edit)
         public void profileCreationUI()
         {
             profileAddLabel.Visible = true;
@@ -240,12 +248,14 @@ namespace MultipeProfileWinForm
             continueButton.Visible = false;
         }
 
+        //reset the input value of profile creation menu
         public void resetInput()
         {
             inputNameBox.Text = "";
             birthDatePicker.Text  = "1-1-2000";
         }
 
+        //Selection to be edited
         private void listProfileBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox list = sender as ListBox;
@@ -261,6 +271,7 @@ namespace MultipeProfileWinForm
             editButton.Visible = true;
         }
 
+        //Showing the list of the database
         private void viewProfiles()
         {
             SqlConnection conDatabase = new SqlConnection(constring);
