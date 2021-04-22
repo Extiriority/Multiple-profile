@@ -12,7 +12,9 @@ namespace MultipeProfileWinForm
             InitializeComponent();
             viewProfiles();
         }
-        string constring = "Data Source=mssql.fhict.local;Initial Catalog=dbi463189_dataflix;Persist Security Info=True;User ID=dbi463189_dataflix;Password=Spreeuwen11%";
+        //Don't forget to add 4 minimal profiles that u said earlier!!!
+        //your connectionstring below!!!
+        string constring = "";
         
         //Opens profile creation UI
         private void createNewProfileButton_Click(object sender, EventArgs e)
@@ -71,15 +73,14 @@ namespace MultipeProfileWinForm
         //Continue with this profile
         private void continueButton_Click(object sender, EventArgs e)
         {
-            if (listProfileBox.Text == "")
+            if (listProfileBox.Text != "")
             {
-                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}Selecteer of maak een nieuwe profiel aan!");
-
-                //your code to selected profile homescreen
+                //Your code to selected profile forwarding to homescreen
+                MessageBox.Show($"Profiel {listProfileBox.Text} gekozen");
             }
             else
             {
-                MessageBox.Show($"Profiel {listProfileBox.Text} gekozen");
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}Selecteer of maak een nieuwe profiel aan!");
             }
         }
         //Delete profile
@@ -126,7 +127,6 @@ namespace MultipeProfileWinForm
                 MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te verwijderen!");
             }          
         }
-
         //Opens edit profile UI
         private void editButton_Click(object sender, EventArgs e)
         {
@@ -137,20 +137,14 @@ namespace MultipeProfileWinForm
             else
             {
                 profileEditUI();
-            }
-            
+            }          
         }
         //Edits being saved
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string age = birthDateEditPicker.Text;
             string name = inputEditNameBox.Text;
 
-            if (name == "" || age == "")
-            {
-                MessageBox.Show("Naam en/of leeftijd niet ingevuld");
-            }
-            else
+            if (name != "")
             {
                 SqlConnection conDatabase = new SqlConnection(constring);
                 try
@@ -175,11 +169,14 @@ namespace MultipeProfileWinForm
                 {
                     conDatabase.Close();
                 }
-
-
+            }
+            else
+            {
+                MessageBox.Show("Naam en/of leeftijd niet ingevuld");
             }  
         }
-        //UI changing (Create and edit)
+
+        //UI visibilty changing (Create and edit to profile or other way around)
         public void profileCreationUI()
         {
             profileAddLabel.Visible = true;
@@ -216,7 +213,6 @@ namespace MultipeProfileWinForm
 
             profileOptionUI();
         }
-
         public void profileOptionSaveUI()
         {
             profileEditLabel.Visible = false;
@@ -231,7 +227,6 @@ namespace MultipeProfileWinForm
 
             profileOptionUI();
         }
-
         public void profileEditUI() 
         {
             profileEditLabel.Visible = true;
@@ -250,14 +245,16 @@ namespace MultipeProfileWinForm
             continueButton.Visible = false;
         }
 
-        //reset the input value of profile creation menu
+        //Reset the input value of profile creation menu
         public void resetInput()
         {
+            //Your choice of default date, but can't be NULL
+            //Also the custom date format = dd-MM-yyyy is in the properties
+            //You can also pick a min max date of your choice in the birthDatePicker properties
             inputNameBox.Text = "";
             birthDatePicker.Text  = "1-1-2000";
         }
-
-        //Selection to be edited
+        //Selection profile value to be added and/or edited
         private void listProfileBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox list = sender as ListBox;
@@ -272,8 +269,7 @@ namespace MultipeProfileWinForm
             deleteButton.Visible = true;
             editButton.Visible = true;
         }
-
-        //Showing the list of the database
+        //Showing the list of GebruikerProfiel from the database
         private void viewProfiles()
         {
             SqlConnection conDatabase = new SqlConnection(constring);
