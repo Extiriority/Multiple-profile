@@ -28,43 +28,32 @@ namespace MultipeProfileWinForm
         }
         public void addProfileButton_Click(object sender, EventArgs e)
         {
-
             string name = inputNameBox.Text;
-            string age = birthDatePicker.Text;
-
-            string profile = $"{age} | {name}";
 
             if (name != "")
             {
-                if (listProfileBox.Items.Contains(profile))
-                {
-                    MessageBox.Show($"U heeft al een naam die {name} heet");
-                }
-                else
-                {
-                    SqlConnection conDatabase = new SqlConnection(constring);
-                    try
-                    {                       
-                        conDatabase.Open();
+                 SqlConnection conDatabase = new SqlConnection(constring);
+                 try
+                 {                       
+                     conDatabase.Open();
 
-                        string Query = "INSERT INTO GebruikerProfiel (ProfielNaam,Geboortedatum) VALUES ('" + inputNameBox.Text + "','" + birthDatePicker.Text + "');";
-                        SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
-                        SqlDataReader myReader = cmdDatabase.ExecuteReader();                   
-                        profileOptionCreateUI();
-                        resetInput();
-                        viewProfiles();
-                        MessageBox.Show($"Profiel {name} is aangemaakt");
+                     string Query = "INSERT INTO GebruikerProfiel (ProfielNaam,Geboortedatum) VALUES ('" + inputNameBox.Text + "','" + birthDatePicker.Text + "');";
+                     SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                     SqlDataReader myReader = cmdDatabase.ExecuteReader();                   
+                     profileOptionCreateUI();
+                     resetInput();
+                     viewProfiles();
+                     MessageBox.Show($"Profiel {name} is aangemaakt");
 
-                        while (myReader.Read())
-                        {
+                     while (myReader.Read())
+                     {
 
-                        }
-                    }
-                    finally
-                    {
-                        conDatabase.Close();
-                    }                   
-                }
+                     }
+                 }
+                 finally
+                 {
+                     conDatabase.Close();
+                 }                   
             }
             else
             {
@@ -88,7 +77,7 @@ namespace MultipeProfileWinForm
         {
             if (listProfileBox.Text == "")
             {
-                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}Selecteer of maak een nieuwe profiel aan");
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}Selecteer of maak een nieuwe profiel aan!");
             }
             else
             {
@@ -97,45 +86,52 @@ namespace MultipeProfileWinForm
         }
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (listProfileBox.Text == "")
+            if (listProfileBox.Text != "")
             {
-                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te verwijderen.");
+                DialogResult dialogResult = MessageBox.Show("Wilt u uw profiel verwijderen?", $"Profiel verwijderen", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    SqlConnection conDatabase = new SqlConnection(constring);
+                    try
+                    {
+                        conDatabase.Open();
+
+                        string Query = "DELETE FROM GebruikerProfiel WHERE ProfielNaam='" + inputEditNameBox.Text + "'";
+                        SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                        SqlDataReader myReader = cmdDatabase.ExecuteReader();
+                        viewProfiles();
+                        profileOptionSaveUI();
+                        resetInput();
+
+                        MessageBox.Show($"Profiel is verwijderd");
+
+                        while (myReader.Read())
+                        {
+
+                        }
+                    }
+                    finally
+                    {
+                        conDatabase.Close();
+                    }
+                    deleteButton.Visible = false;
+                    editButton.Visible = false;
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+
+                }
             }
             else
             {
-                SqlConnection conDatabase = new SqlConnection(constring);
-                try
-                {
-                    conDatabase.Open();
-
-                    string Query = "DELETE FROM GebruikerProfiel WHERE ProfielNaam='" + inputEditNameBox.Text + "'";
-                    SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
-                    SqlDataReader myReader = cmdDatabase.ExecuteReader();
-                    viewProfiles();
-                    profileOptionSaveUI();
-                    resetInput();
-
-                    MessageBox.Show($"Profiel is verwijdered");
-
-                    while (myReader.Read())
-                    {
-
-                    }
-                }
-                finally
-                {
-                    conDatabase.Close();
-                }
-                deleteButton.Visible = false;
-                editButton.Visible = false;
-            }
-            
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te verwijderen!");
+            }          
         }
         private void editButton_Click(object sender, EventArgs e)
         {
             if (listProfileBox.Text == "")
             {
-                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te bewerken.");
+                MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}om te bewerken!");
             }
             else
             {
@@ -148,7 +144,6 @@ namespace MultipeProfileWinForm
         {
             string age = birthDateEditPicker.Text;
             string name = inputEditNameBox.Text;
-            string profile = $"{name} | {age}";
 
             if (name == "" || age == "")
             {
@@ -156,36 +151,31 @@ namespace MultipeProfileWinForm
             }
             else
             {
-                if (listProfileBox.Items.Contains(profile))
+                SqlConnection conDatabase = new SqlConnection(constring);
+                try
                 {
-                    MessageBox.Show($"U heeft al een naam die {name} heet");
-                }
-                else
-                {
-                    SqlConnection conDatabase = new SqlConnection(constring);
-                    try
+                    conDatabase.Open();
+
+                    string Query = "UPDATE GebruikerProfiel SET ProfielNaam='" + inputEditNameBox.Text + "' WHERE ProfielNaam='" + listProfileBox.SelectedItem.ToString() + "'";
+                    SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
+                    SqlDataReader myReader = cmdDatabase.ExecuteReader();
+                    viewProfiles();
+                    profileOptionSaveUI();
+                    resetInput();
+
+                    MessageBox.Show($"Profiel {name} is bewerkt");
+
+                    while (myReader.Read())
                     {
-                        conDatabase.Open();
 
-                        string Query = "UPDATE GebruikerProfiel SET ProfielNaam='" + inputEditNameBox.Text + "' WHERE ProfielNaam='" + listProfileBox.SelectedItem.ToString() + "'";
-                        SqlCommand cmdDatabase = new SqlCommand(Query, conDatabase);
-                        SqlDataReader myReader = cmdDatabase.ExecuteReader();
-                        viewProfiles();
-                        profileOptionSaveUI();
-                        resetInput();
-
-                        MessageBox.Show($"Profiel {name} is bewerkt");
-
-                        while (myReader.Read())
-                        {
-
-                        }
-                    }
-                    finally
-                    {
-                        conDatabase.Close();
                     }
                 }
+                finally
+                {
+                    conDatabase.Close();
+                }
+
+
             }  
         }
         public void profileCreationUI()
@@ -271,11 +261,11 @@ namespace MultipeProfileWinForm
             {
                 listProfileBox.SelectedIndex = list.SelectedIndex;
                 hiddenAgeListBox.SelectedIndex = list.SelectedIndex;
-                hiddenIdListBox.SelectedIndex = list.SelectedIndex;
+                //hiddenIdListBox.SelectedIndex = list.SelectedIndex;
 
                 inputEditNameBox.Text = listProfileBox.SelectedItem.ToString();
                 birthDateEditPicker.Value = DateTime.Parse(hiddenAgeListBox.SelectedItem.ToString());
-                hiddenIdNameBox.Text = listProfileBox.SelectedItem.ToString();
+                //hiddenIdNameBox.Text = listProfileBox.SelectedItem.ToString();
             }
             deleteButton.Visible = true;
             editButton.Visible = true;
@@ -288,7 +278,7 @@ namespace MultipeProfileWinForm
             {
                 listProfileBox.Items.Clear();
                 hiddenAgeListBox.Items.Clear();
-                hiddenIdListBox.Items.Clear();
+                //hiddenIdListBox.Items.Clear();
 
                 conDatabase.Open();
 
@@ -301,7 +291,7 @@ namespace MultipeProfileWinForm
                     {
                         listProfileBox.Items.Add(profileView["ProfielNaam"].ToString());
                         hiddenAgeListBox.Items.Add(profileView["Geboortedatum"].ToString());
-                        hiddenIdListBox.Items.Add(profileView["ProfielId"].ToString());
+                        //hiddenIdListBox.Items.Add(profileView["ProfielId"].ToString());
                     }
                 }
             }
@@ -310,6 +300,5 @@ namespace MultipeProfileWinForm
                 conDatabase.Close();
             }
         }
-
     }
 }
