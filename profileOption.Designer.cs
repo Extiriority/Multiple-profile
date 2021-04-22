@@ -51,8 +51,6 @@ namespace MultipeProfileWinForm
             this.birthDatePicker = new System.Windows.Forms.DateTimePicker();
             this.hiddenAgeListBox = new System.Windows.Forms.ListBox();
             this.birthDateEditPicker = new System.Windows.Forms.DateTimePicker();
-            this.hiddenIdListBox = new System.Windows.Forms.ListBox();
-            this.hiddenIdNameBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -267,10 +265,11 @@ namespace MultipeProfileWinForm
             // 
             this.hiddenAgeListBox.FormattingEnabled = true;
             this.hiddenAgeListBox.ItemHeight = 15;
-            this.hiddenAgeListBox.Location = new System.Drawing.Point(36, 110);
+            this.hiddenAgeListBox.Location = new System.Drawing.Point(12, 177);
             this.hiddenAgeListBox.Name = "hiddenAgeListBox";
             this.hiddenAgeListBox.Size = new System.Drawing.Size(120, 94);
             this.hiddenAgeListBox.TabIndex = 23;
+            this.hiddenAgeListBox.Visible = false;
             // 
             // birthDateEditPicker
             // 
@@ -285,29 +284,11 @@ namespace MultipeProfileWinForm
             this.birthDateEditPicker.Value = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.birthDateEditPicker.Visible = false;
             // 
-            // hiddenIdListBox
-            // 
-            this.hiddenIdListBox.FormattingEnabled = true;
-            this.hiddenIdListBox.ItemHeight = 15;
-            this.hiddenIdListBox.Location = new System.Drawing.Point(50, 281);
-            this.hiddenIdListBox.Name = "hiddenIdListBox";
-            this.hiddenIdListBox.Size = new System.Drawing.Size(120, 94);
-            this.hiddenIdListBox.TabIndex = 25;
-            // 
-            // hiddenIdNameBox
-            // 
-            this.hiddenIdNameBox.Location = new System.Drawing.Point(56, 231);
-            this.hiddenIdNameBox.Name = "hiddenIdNameBox";
-            this.hiddenIdNameBox.Size = new System.Drawing.Size(100, 23);
-            this.hiddenIdNameBox.TabIndex = 26;
-            // 
             // dataflixProfiles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.hiddenIdNameBox);
-            this.Controls.Add(this.hiddenIdListBox);
             this.Controls.Add(this.birthDateEditPicker);
             this.Controls.Add(this.hiddenAgeListBox);
             this.Controls.Add(this.birthDatePicker);
@@ -359,8 +340,6 @@ namespace MultipeProfileWinForm
         private System.Windows.Forms.DateTimePicker birthDatePicker;
         private System.Windows.Forms.ListBox hiddenAgeListBox;
         private System.Windows.Forms.DateTimePicker birthDateEditPicker;
-        private System.Windows.Forms.ListBox hiddenIdListBox;
-        private System.Windows.Forms.TextBox hiddenIdNameBox;
     }
 }
 

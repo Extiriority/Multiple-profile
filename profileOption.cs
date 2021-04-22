@@ -1,13 +1,5 @@
-﻿using ClassLib;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MultipeProfileWinForm
@@ -164,7 +156,7 @@ namespace MultipeProfileWinForm
                     resetInput();
 
                     MessageBox.Show($"Profiel {name} is bewerkt");
-
+                    
                     while (myReader.Read())
                     {
 
@@ -261,11 +253,9 @@ namespace MultipeProfileWinForm
             {
                 listProfileBox.SelectedIndex = list.SelectedIndex;
                 hiddenAgeListBox.SelectedIndex = list.SelectedIndex;
-                //hiddenIdListBox.SelectedIndex = list.SelectedIndex;
 
                 inputEditNameBox.Text = listProfileBox.SelectedItem.ToString();
                 birthDateEditPicker.Value = DateTime.Parse(hiddenAgeListBox.SelectedItem.ToString());
-                //hiddenIdNameBox.Text = listProfileBox.SelectedItem.ToString();
             }
             deleteButton.Visible = true;
             editButton.Visible = true;
@@ -278,7 +268,6 @@ namespace MultipeProfileWinForm
             {
                 listProfileBox.Items.Clear();
                 hiddenAgeListBox.Items.Clear();
-                //hiddenIdListBox.Items.Clear();
 
                 conDatabase.Open();
 
@@ -291,7 +280,6 @@ namespace MultipeProfileWinForm
                     {
                         listProfileBox.Items.Add(profileView["ProfielNaam"].ToString());
                         hiddenAgeListBox.Items.Add(profileView["Geboortedatum"].ToString());
-                        //hiddenIdListBox.Items.Add(profileView["ProfielId"].ToString());
                     }
                 }
             }
