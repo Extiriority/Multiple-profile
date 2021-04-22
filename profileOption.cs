@@ -74,6 +74,8 @@ namespace MultipeProfileWinForm
             if (listProfileBox.Text == "")
             {
                 MessageBox.Show($"U heeft geen profiel gekozen {Environment.NewLine}Selecteer of maak een nieuwe profiel aan!");
+
+                //your code to selected profile homescreen
             }
             else
             {
